@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Container } from 'reactstrap';
-import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getNotes } from '../actions';
 import { Link } from 'react-router-dom';
+import Notes from './Notes';
 
 class YourNotes extends Component {
   componentDidMount() {
@@ -18,19 +18,14 @@ class YourNotes extends Component {
           {this.props.notes.map(note => {
             return (
               <form>
-                <form key={note._id} note={note} />
-                {note.selected ? (
-                  <Redirect to={`/note/${note._id}`} />
-                ) : (
-                  console.log('redirect ')
-                )}
+                <Notes key={note.id} note={note} />
               </form>
             );
           })}
-          <Link to="/" className="notesLink">
-            Close Notes
-          </Link>
         </div>
+        <Link to="/" className="notesLink">
+          Close Notes
+        </Link>
       </Container>
     );
   }
