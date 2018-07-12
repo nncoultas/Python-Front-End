@@ -42,7 +42,7 @@ class SignUp extends Component {
 }
 
 const mapStateToProps = state => {
-  return {};
+  return { error: state.auth.error };
 };
 
 SignUp = connect(

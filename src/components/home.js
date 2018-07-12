@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { logout } from '../actions/index';
 
 class home extends Component {
   render() {
@@ -11,12 +13,15 @@ class home extends Component {
         <Link to="/notes" className="notesLink">
           View Your Notes
         </Link>
-        <Link to="/" className="logout" onClick={this.submitHandler}>
-          Logout
-        </Link>
-        <Link to="/login" className="login">
-          login
-        </Link>
+        {this.props.authenticated ? (
+          <Link to="/" className="logout" onClick={this.submitHandler}>
+            Logout
+          </Link>
+        ) : (
+          <Link to="/login" className="login">
+            login
+          </Link>
+        )}
         <Link to="/signup" className="signup">
           {' '}
           Sign Up{' '}
@@ -29,4 +34,13 @@ class home extends Component {
   };
 }
 
-export default home;
+const mapStateToProps = state => {
+  return {
+    authenticated: state.auth.authenticated
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  { logout }
+)(home);

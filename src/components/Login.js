@@ -34,7 +34,10 @@ class Login extends Component {
 }
 
 const mapStateToProps = state => {
-  return {};
+  return {
+    error: state.auth.error,
+    authenticated: state.auth.authenticated
+  };
 };
 
 Login = connect(

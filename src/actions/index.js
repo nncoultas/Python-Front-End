@@ -29,9 +29,10 @@ export const noteError = error => {
 };
 
 export const getNotes = () => {
+  const token = localStorage.getItem('token');
   return dispatch => {
     axios
-      .get(`${ROOT_URL}/api/notes/`)
+      .post(`${ROOT_URL}/api/notes`, { headers: { authorization: token } })
       .then(response => {
         dispatch({
           type: GET_NOTES,
@@ -51,7 +52,7 @@ export const register = (username, password, confirmPassword, history) => {
       return;
     }
     axios
-      .post(`${ROOT_URL}/signup/`, { username, password })
+      .post(`${ROOT_URL}/signup`, { username, password })
       .then(() => {
         dispatch({
           type: USER_REGISTERED
@@ -67,12 +68,12 @@ export const register = (username, password, confirmPassword, history) => {
 export const login = (username, password, history) => {
   return dispatch => {
     axios
-      .post(`${ROOT_URL}/login/`, { username, password }, { headers: {} })
-      .then(() => {
+      .post(`${ROOT_URL}/api-token-auth/`, { username, password })
+      .then(result => {
         dispatch({
-          type: USER_AUTHENTICATED,
-          payload: username
+          type: USER_AUTHENTICATED
         });
+        localStorage.setItem('token', result.data.token);
         history.push('/');
       })
       .catch(() => {
@@ -83,13 +84,7 @@ export const login = (username, password, history) => {
 
 export const logout = () => {
   return dispatch => {
-    axios
-      .post(`${ROOT_URL}/logout/`)
-      .then(() => {
-        dispatch({ type: USER_UNAUTHENTICATED });
-      })
-      .catch(() => {
-        dispatch(authError('unable to logout'));
-      });
+    localStorage.removeItem('token');
+    dispatch({ type: USER_UNAUTHENTICATED });
   };
 };
