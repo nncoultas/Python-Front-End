@@ -11,9 +11,22 @@ class home extends Component {
         <Link to="/notes" className="notesLink">
           View Your Notes
         </Link>
+        <Link to="/" className="logout" onClick={this.submitHandler}>
+          Logout
+        </Link>
+        <Link to="/login" className="login">
+          login
+        </Link>
+        <Link to="/signup" className="signup">
+          {' '}
+          Sign Up{' '}
+        </Link>
       </div>
     );
   }
+  submitHandler = () => {
+    this.props.logout();
+  };
 }
 
 export default home;
